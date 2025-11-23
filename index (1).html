@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes Diarios | Sistema Avanzado con Supabase</title>
+    <title>Reportes Diarios | Sistema Avanzado</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -49,7 +49,6 @@
             margin: 0 auto;
         }
         
-        /* Header con efecto de partículas */
         header {
             text-align: center;
             margin-bottom: 50px;
@@ -136,7 +135,6 @@
             }
         }
         
-        /* Contenedores de formulario y vista previa */
         .form-container, .preview-container {
             background: rgba(30, 41, 59, 0.7);
             border-radius: 24px;
@@ -233,7 +231,6 @@
             resize: vertical;
         }
         
-        /* Botones mejorados */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -305,7 +302,6 @@
             margin-top: 30px;
         }
         
-        /* Lista de tickets mejorada */
         .ticket-list {
             margin-top: 20px;
             max-height: 550px;
@@ -444,7 +440,6 @@
             font-size: 1rem;
         }
         
-        /* Estadísticas mejoradas */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -509,7 +504,6 @@
             padding: 25px;
         }
         
-        /* Notificación mejorada */
         .notification {
             position: fixed;
             top: 30px;
@@ -547,7 +541,6 @@
             color: var(--danger);
         }
         
-        /* Botón flotante mejorado */
         .floating-btn {
             position: fixed;
             bottom: 30px;
@@ -573,7 +566,6 @@
             box-shadow: 0 15px 30px rgba(99, 102, 241, 0.6);
         }
         
-        /* Encabezado de vista previa */
         .preview-header {
             display: flex;
             justify-content: space-between;
@@ -652,7 +644,6 @@
             color: var(--danger);
         }
         
-        /* Efectos de carga */
         .loading {
             display: inline-block;
             width: 20px;
@@ -667,7 +658,6 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .main-content {
                 gap: 25px;
@@ -822,7 +812,7 @@
     </div>
 
     <script>
-        // Configuración de Supabase - REEMPLAZA CON TUS PROPIAS CREDENCIALES
+        // Configuración de Supabase - REEMPLAZA CON TUS CREDENCIALES
         const SUPABASE_URL = 'https://tu-proyecto.supabase.co';
         const SUPABASE_ANON_KEY = 'tu-anon-key';
         
@@ -857,16 +847,13 @@
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
-                // Tamaño aleatorio
                 const size = Math.random() * 10 + 2;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 
-                // Posición aleatoria
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
                 
-                // Retraso de animación aleatorio
                 particle.style.animationDelay = `${Math.random() * 15}s`;
                 
                 particlesContainer.appendChild(particle);
@@ -900,7 +887,6 @@
                 });
             });
             
-            // Mostrar botón de scroll al hacer scroll
             window.addEventListener('scroll', function() {
                 if (window.pageYOffset > 300) {
                     scrollTopBtn.style.display = 'flex';
@@ -958,14 +944,12 @@
             const priority = document.getElementById('ticketPriority').value;
             const description = document.getElementById('ticketDescription').value;
             
-            // Mostrar estado de carga
             const submitBtn = ticketForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<div class="loading"></div> Guardando...';
             submitBtn.disabled = true;
             
             try {
-                // Insertar en Supabase
                 const { data, error } = await supabase
                     .from('tickets')
                     .insert([
@@ -981,7 +965,6 @@
                 
                 if (error) throw error;
                 
-                // Agregar a la lista local
                 if (data && data.length > 0) {
                     const newTicket = data[0];
                     tickets.unshift(newTicket);
@@ -994,7 +977,6 @@
                 console.error('Error guardando ticket:', error);
                 showNotification('Error guardando el reporte', 'error');
             } finally {
-                // Restaurar botón
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }
@@ -1044,7 +1026,6 @@
                 ticketList.appendChild(ticketItem);
             });
             
-            // Agregar event listeners a los botones de eliminar
             document.querySelectorAll('.action-btn.delete').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const ticketId = this.getAttribute('data-id');
@@ -1064,7 +1045,6 @@
                     
                     if (error) throw error;
                     
-                    // Eliminar de la lista local
                     tickets = tickets.filter(ticket => ticket.id !== id);
                     renderTickets();
                     updateStats();
@@ -1081,7 +1061,6 @@
             let filteredTickets = [...tickets];
             const searchTerm = searchInput.value.toLowerCase();
             
-            // Aplicar filtro de búsqueda
             if (searchTerm) {
                 filteredTickets = filteredTickets.filter(ticket => 
                     ticket.title.toLowerCase().includes(searchTerm) || 
@@ -1090,7 +1069,6 @@
                 );
             }
             
-            // Aplicar filtro de prioridad/fecha
             const today = new Date().toLocaleDateString('es-ES');
             const oneWeekAgo = new Date();
             oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -1139,13 +1117,11 @@
                 return;
             }
             
-            // Mostrar estado de carga
             const originalText = exportExcelBtn.innerHTML;
             exportExcelBtn.innerHTML = '<div class="loading"></div> Generando...';
             exportExcelBtn.disabled = true;
             
             try {
-                // Preparar datos para Excel
                 const data = tickets.map(ticket => ({
                     'ID': ticket.id,
                     'Título': ticket.title,
@@ -1156,18 +1132,15 @@
                     'Fecha': new Date(ticket.created_at).toLocaleDateString('es-ES')
                 }));
                 
-                // Crear libro de trabajo
                 const wb = XLSX.utils.book_new();
                 const ws = XLSX.utils.json_to_sheet(data);
                 
-                // Estilos para Excel (colores y formato)
                 const headerStyle = {
                     font: { bold: true, color: { rgb: "FFFFFF" } },
                     fill: { fgColor: { rgb: "6366F1" } },
                     alignment: { horizontal: "center" }
                 };
                 
-                // Aplicar estilos a los encabezados
                 const range = XLSX.utils.decode_range(ws['!ref']);
                 for (let C = range.s.c; C <= range.e.c; ++C) {
                     const address = XLSX.utils.encode_cell({ r: 0, c: C });
@@ -1175,22 +1148,19 @@
                     ws[address].s = headerStyle;
                 }
                 
-                // Ajustar el ancho de las columnas
                 const colWidths = [
-                    { wch: 10 }, // ID
-                    { wch: 30 }, // Título
-                    { wch: 20 }, // Categoría
-                    { wch: 15 }, // Prioridad
-                    { wch: 50 }, // Descripción
-                    { wch: 15 }, // Estado
-                    { wch: 12 }  // Fecha
+                    { wch: 10 },
+                    { wch: 30 },
+                    { wch: 20 },
+                    { wch: 15 },
+                    { wch: 50 },
+                    { wch: 15 },
+                    { wch: 12 }
                 ];
                 ws['!cols'] = colWidths;
                 
-                // Agregar hoja al libro
                 XLSX.utils.book_append_sheet(wb, ws, "Reportes Diarios");
                 
-                // Generar archivo y descargar
                 const fileName = `Reportes_Diarios_${new Date().toISOString().split('T')[0]}.xlsx`;
                 XLSX.writeFile(wb, fileName);
                 
@@ -1199,7 +1169,6 @@
                 console.error('Error exportando a Excel:', error);
                 showNotification('Error generando el archivo Excel', 'error');
             } finally {
-                // Restaurar botón
                 exportExcelBtn.innerHTML = originalText;
                 exportExcelBtn.disabled = false;
             }
@@ -1214,20 +1183,17 @@
             
             if (confirm('¿Estás seguro de que deseas eliminar todos los reportes? Esta acción no se puede deshacer.')) {
                 try {
-                    // Mostrar estado de carga
                     const originalText = clearAllBtn.innerHTML;
                     clearAllBtn.innerHTML = '<div class="loading"></div> Eliminando...';
                     clearAllBtn.disabled = true;
                     
-                    // Eliminar todos los tickets de Supabase
                     const { error } = await supabase
                         .from('tickets')
                         .delete()
-                        .neq('id', 0); // Esto eliminará todos los registros
+                        .neq('id', 0);
                     
                     if (error) throw error;
                     
-                    // Limpiar lista local
                     tickets = [];
                     renderTickets();
                     updateStats();
@@ -1236,7 +1202,6 @@
                     console.error('Error eliminando tickets:', error);
                     showNotification('Error eliminando los reportes', 'error');
                 } finally {
-                    // Restaurar botón
                     clearAllBtn.innerHTML = originalText;
                     clearAllBtn.disabled = false;
                 }
